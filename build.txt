@@ -1,0 +1,4 @@
+displayName = Markoth Challenge(马科斯挑战)
+author = 网络核心
+version = 0.3
+modReferences = SubworldLibrary

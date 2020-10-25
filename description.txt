@@ -1,0 +1,31 @@
+Use this mod to challenge the Markoth in Hollow Knight.
+You can use Challenge Markoth to enter his dream world and challenge him.
+In his world,falling damage is disabled, you can only double jump once and climb walls, you can't place or break tiles in the world, when you touch the spike,you will take more damage and return to the center of the battlefield.
+Markoth's dream shield can reflect projectiles, whose owner also has a very high DR for projectiles, but will take 3x damage when you use true melee weapon.
+Needs SubworldLibrary.
+changelog:
+v0.2:
+-Fixed the bug that spikes will not kill you.
+-Added the three difficulty modes: ATTUNED, ASCENDED, and RADIANT.
+-Modify Markoth AI less aggressive.
+-Death in the dream world will not drop money, items, tomb, and will not destroy your player in hardcore. 
+v0.3
+-Fix the bug that you can't save your player in dream world.
+-Modify Markoth's hitbox and the distance and the velocity of the dream shield.
+-Decrease Markoth's Damage.
+
+这个mod可以让你挑战《空洞骑士》中的马科斯。
+你可以使用“挑战马科斯”物品来进入他的梦境世界挑战。
+在他的世界里，摔落伤害被取消，你只能使用一次二段跳和爬墙，不能放置或破坏物块，且当你碰到尖刺时你会受到更高的伤害并返回出生点。
+马科斯的梦之盾可以反弹射弹，他本身也有很强的射弹抗性，但他会受到3倍的真近战伤害。
+需要SubworldLibrary作为前置。
+更新日志：
+v0.2
+-修复了尖刺不会杀死你的bug。
+-添加了三个难度模式：调谐，晋升，和辐辉。
+-调整了马科斯的AI使其不那么猛烈。
+-在梦境世界中死亡将不会掉落金钱，物品和碑石，硬核模式下也不会碎档。
+v0.3
+-修复了玩家不能在梦境世界保存人物的bug。
+-调整了马科斯的碰撞箱，并调整了梦之盾的速度和距离。
+-降低了马科斯的伤害。
