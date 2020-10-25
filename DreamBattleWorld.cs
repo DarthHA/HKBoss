@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using Terraria.UI;
 using Terraria.GameContent.Events;
 using IL.Terraria.Initializers;
+using Terraria.ModLoader.IO;
 
 namespace HKBoss
 {
@@ -119,11 +120,33 @@ namespace HKBoss
 
 	public class DreamModWorld : ModWorld
 	{
+		public static bool DownedMarx1;
+		public static bool DownedMarx2;
+		public static bool DownedMarx3;
 		public static int Difficulty = 0;
 		public static float enWhite = 0;
 		public int Timer1 = 0;
 		public int Timer2 = -1;
 		public bool ExistBoss = false;
+
+        public override TagCompound Save()
+        {
+			return new TagCompound
+			{
+				{"DownedMarx1" ,DownedMarx1},
+				{"DownedMarx2" ,DownedMarx2},
+				{"DownedMarx3" ,DownedMarx3},
+			};
+        }
+        public override void Load(TagCompound tag)
+        {
+			DownedMarx1 = false;
+			DownedMarx2 = false;
+			DownedMarx3 = false;
+			DownedMarx1 = tag.GetBool("DownedMarx1");
+			DownedMarx2 = tag.GetBool("DownedMarx2");
+			DownedMarx3 = tag.GetBool("DownedMarx3");
+		}
         public override void PreUpdate()
         {
 			if (DreamBattleWorld.IsActive<DreamBattleWorld>())

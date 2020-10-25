@@ -180,7 +180,7 @@ namespace HKBoss
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.ZoomMatrix);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.ZoomMatrix);
             Texture2D tex = Main.projectileTexture[projectile.type];
             SpriteEffects SP = SpriteEffects.None;
             Rectangle Frame = new Rectangle(0, projectile.frame * tex.Height / 3, tex.Width, tex.Height / 3);

@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SubworldLibrary;
+using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -33,9 +35,18 @@ namespace HKBoss
             CustomText.SetDefault("RADIANT");
             CustomText.AddTranslation(GameCulture.Chinese, "辐辉");
             AddTranslation(CustomText);
+
+
         }
 
 
+        public override void ModifySunLightColor(ref Color tileColor, ref Color backgroundColor)
+        {
+            if (Subworld.IsActive<DreamBattleWorld>())
+            {
+                backgroundColor = Color.DarkGray;
+            }
+        }
         public static void DropTombstoneHook(On.Terraria.Player.orig_DropTombstone orig, Player self, int coinowned, NetworkText deathText, int hitDirection)
         {
             if (!Subworld.IsActive<DreamBattleWorld>())
@@ -127,12 +138,30 @@ namespace HKBoss
         }
         public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource)
         {
-            if (Subworld.IsActive<DreamBattleWorld>() && DreamModWorld.Difficulty == 2) 
+            if (Subworld.IsActive<DreamBattleWorld>() && DreamModWorld.Difficulty == 2)
             {
                 player.KillMe(PlayerDeathReason.LegacyDefault(), damage, hitDirection, false);
             }
             return true;
         }
+        public override void ModifyHitNPC(Item item, NPC target, ref int damage, ref float knockback, ref bool crit)
+        {
+            foreach (Projectile proj in Main.projectile)
+            {
+                if (proj.active && proj.type == ModContent.ProjectileType<DreamShield>())
+                {
+                    float point = 0;
+                    Rectangle MeleeHitbox = new Rectangle((int)player.itemLocation.X, (int)player.itemLocation.Y, player.itemWidth, player.itemHeight);
+                    if (Collision.CheckAABBvLineCollision(MeleeHitbox.TopLeft(), MeleeHitbox.Size(), proj.Center + (proj.rotation - MathHelper.Pi / 2).ToRotationVector2() * 40,
+                proj.Center + (proj.rotation + MathHelper.Pi / 2).ToRotationVector2() * 40, 30, ref point))
+                    {
+                        damage = 1;
+                        crit = false;
+                        knockback = 0;
+                    }
+                }
+            }
+        } 
         public override void PostUpdateMiscEffects()
         {
             if (Subworld.IsActive<DreamBattleWorld>())
@@ -148,7 +177,7 @@ namespace HKBoss
                 }
                 if (vector3.Y != 0f)
                 {
-                    player.Hurt(PlayerDeathReason.ByOther(3),Main.DamageVar(80), 0, false, false, false, 0);
+                    player.Hurt(PlayerDeathReason.ByOther(3),Main.DamageVar(90), 0, false, false, false, 0);
                     if (!player.dead)
                     {
                         player.Spawn();

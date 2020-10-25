@@ -13,6 +13,8 @@ v0.3
 -Fix the bug that you can't save your player in dream world.
 -Modify Markoth's hitbox and the distance and the velocity of the dream shield.
 -Decrease Markoth's Damage.
+v0.4
+-Modify the way dream nails and dream shield are drawn.
 
 这个mod可以让你挑战《空洞骑士》中的马科斯。
 你可以使用“挑战马科斯”物品来进入他的梦境世界挑战。
@@ -29,3 +31,5 @@ v0.3
 -修复了玩家不能在梦境世界保存人物的bug。
 -调整了马科斯的碰撞箱，并调整了梦之盾的速度和距离。
 -降低了马科斯的伤害。
+v0.4
+-调整了梦之盾和梦之钉射弹的绘制方式。

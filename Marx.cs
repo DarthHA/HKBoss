@@ -65,9 +65,12 @@ namespace HKBoss
 
             npc.TargetClosest();
             Player target = Main.player[npc.target];
-            if (target.dead || !target.active)
+            if (npc.ai[0] < 3)
             {
-                npc.active = false;
+                if (target.dead || !target.active)
+                {
+                    npc.active = false;
+                }
             }
             if (npc.ai[0] == 0)
             {
@@ -414,6 +417,21 @@ namespace HKBoss
         public override void BossLoot(ref string name, ref int potionType)
         {
             potionType = ItemID.None;
+        }
+        public override void NPCLoot()
+        {
+            if (DreamModWorld.Difficulty == 0)
+            {
+                DreamModWorld.DownedMarx1 = true;
+            }
+            if (DreamModWorld.Difficulty == 1)
+            {
+                DreamModWorld.DownedMarx2 = true;
+            }
+            if (DreamModWorld.Difficulty == 2)
+            {
+                DreamModWorld.DownedMarx3 = true;
+            }
         }
         public override bool CheckActive()
         {
