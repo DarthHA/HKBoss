@@ -20,6 +20,9 @@ namespace HKBoss
     {
         public bool HarfLife = false;
         public int SRTimer = 0;
+        public bool ProjResist = false;
+        public int KBTimer = -1;
+        public Vector2 OldVel = Vector2.Zero;
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Markoth");
@@ -72,6 +75,16 @@ namespace HKBoss
                     npc.active = false;
                 }
             }
+            target.thorns = 0;
+            if (KBTimer > 0)
+            {
+                KBTimer--;
+                if (KBTimer == 0)
+                {
+                    KBTimer--;
+                    npc.velocity = Vector2.Zero;
+                }
+            }
             if (npc.ai[0] == 0)
             {
                 npc.dontTakeDamage = true;
@@ -112,9 +125,17 @@ namespace HKBoss
                         npc.localAI[3] = -1;
                     }
 
-                    if (npc.ai[2] == 0)
+
+                    if (npc.velocity == Vector2.Zero)
                     {
-                        npc.velocity = (Main.rand.NextFloat() * MathHelper.TwoPi).ToRotationVector2() * 4;
+                        if (OldVel == Vector2.Zero)
+                        {
+                            npc.velocity = (Main.rand.NextFloat() * MathHelper.TwoPi).ToRotationVector2() * 4;
+                        }
+                        else
+                        {
+                            npc.velocity = OldVel;
+                        }
                     }
                     if (npc.Distance(target.Center) > 1000)
                     {
@@ -169,7 +190,6 @@ namespace HKBoss
                 }
                 else if (npc.ai[1] == 2)   //转盾
                 {
-                    npc.velocity = Vector2.Zero;
                     npc.ai[2]++;
                     if (npc.ai[2] > 600)
                     {
@@ -183,11 +203,13 @@ namespace HKBoss
                     npc.ai[2]++;
                     if (npc.ai[2] > 15)
                     {
+                        ProjResist = false;
                         npc.width = 100;
                         npc.position.X += 50;
                         npc.ai[1] = 0;
                         npc.ai[2] = 0;
                         CheckLife();
+                        npc.velocity = (Main.rand.NextFloat() * MathHelper.TwoPi).ToRotationVector2() * 4;
                     }
                 }
             }
@@ -263,13 +285,7 @@ namespace HKBoss
             }
         }
 
-        public override void HitEffect(int hitDirection, double damage)
-        {
-            for(int i = 0; i < 14; i++)
-            {
-                SomeUtils.SummonParticle(npc.Center, Main.rand.Next(15));
-            }
-        }
+
         public override void FindFrame(int frameHeight)
         {
             if (npc.ai[0] < 3)
@@ -372,19 +388,40 @@ namespace HKBoss
         {
             Texture2D tex = Main.npcTexture[npc.type];
             Vector2 Center = npc.position + new Vector2(npc.width / 2, 150);
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.ZoomMatrix);
-            spriteBatch.Draw(tex, Center - Main.screenPosition, npc.frame, Color.Goldenrod, npc.rotation, npc.frame.Size() / 2, npc.scale * 0.71f, SpriteEffects.None, 0);
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.ZoomMatrix);
-            spriteBatch.Draw(tex, Center - Main.screenPosition, npc.frame, Color.White, npc.rotation, npc.frame.Size() / 2, npc.scale * 0.7f, SpriteEffects.None, 0);
+            Color color = Color.White;
+            switch (KBTimer)
+            {
+                case 1:
+                case 4:
+                    color.A /= 3;
+                    break;
+                case 2:
+                case 3:
+                    color.A = 0;
+                    break;
+                case 0:
+                case 5:
+                    color.A /= 2;
+                    break;
+                default:
+                    break;
+            }
+            //spriteBatch.End();
+            //spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.ZoomMatrix);
+            //spriteBatch.Draw(tex, Center - Main.screenPosition, npc.frame, Color.Goldenrod, npc.rotation, npc.frame.Size() / 2, npc.scale * 0.71f, SpriteEffects.None, 0);
+            //spriteBatch.End();
+            //spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.ZoomMatrix);
+            spriteBatch.Draw(tex, Center - Main.screenPosition, npc.frame, color, npc.rotation, npc.frame.Size() / 2, npc.scale * 0.7f, SpriteEffects.None, 0);
 
-            if (npc.ai[0] == 3 && npc.ai[2] < 10)
+            if (npc.ai[0] == 3 && npc.ai[2] < 20)
             {
 
                 Vector2 ScreenPos = npc.Center - Main.screenPosition;
                 int R = (int)(64 * npc.scale * Math.Sqrt(npc.ai[2] / 10) * 10);
-
+                if (npc.ai[2] >= 10)
+                {
+                    R = (int)(64 * npc.scale);
+                }
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
                 DrawData value10 = new DrawData(TextureManager.Load("Images/Misc/Perlin"), ScreenPos, new Microsoft.Xna.Framework.Rectangle?(new Rectangle(0, 0, R * 2, R * 2)), new Color(50, 50, 50, 50), npc.rotation, new Vector2(R, R), new Vector2(1, 0.67f), SpriteEffects.None, 0);
@@ -400,7 +437,25 @@ namespace HKBoss
 
         public override void ModifyHitByProjectile(Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
         {
-            damage /= 6;
+            if (ProjResist)
+            {
+                damage /= 12;
+                crit = false;
+                if (DreamModWorld.Difficulty > 0)
+                {
+                    damage = 0;
+                }
+            }
+            else
+            {
+                damage *= 2;
+                crit = true;
+                ProjResist = true;
+
+                KBTimer = 5;
+                OldVel = npc.velocity;
+                npc.velocity = Vector2.Normalize(npc.Center - projectile.Center + new Vector2(0, 0.001f)) * 40;
+            }
             if (!HarfLife && npc.life < npc.lifeMax / 2)
             {
                 damage = 1;
@@ -408,10 +463,32 @@ namespace HKBoss
         }
         public override void ModifyHitByItem(Player player, Item item, ref int damage, ref float knockback, ref bool crit)
         {
-            damage *= 2;
+            if (item.type != ItemID.PsychoKnife)
+            {
+                damage *= 4;
+            }
             if (!HarfLife && npc.life < npc.lifeMax / 2)
             {
                 damage = 1;
+            }
+        }
+        public override void OnHitByItem(Player player, Item item, int damage, float knockback, bool crit)
+        {
+            KBTimer = 5;
+            OldVel = npc.velocity;
+            npc.velocity = Vector2.Normalize(npc.Center - player.Center + new Vector2(0, 0.001f)) * 40;
+            for (int i = 0; i < 14; i++)
+            {
+                float r = (npc.Center - player.Center).ToRotation();
+                Projectile.NewProjectile(npc.Center, (r + Main.rand.NextFloat() * MathHelper.Pi / 3 - MathHelper.Pi / 6).ToRotationVector2() * (Main.rand.Next(35) + 10), ModContent.ProjectileType<DreamParticle>(), 1, 0, default, Main.rand.Next(3));
+            }
+        }
+        public override void OnHitByProjectile(Projectile projectile, int damage, float knockback, bool crit)
+        {
+            for (int i = 0; i < 14; i++)
+            {
+                float r = (npc.Center - projectile.Center).ToRotation();
+                Projectile.NewProjectile(npc.Center, (r + Main.rand.NextFloat() * MathHelper.Pi / 3 - MathHelper.Pi / 6).ToRotationVector2() * (Main.rand.Next(35) + 10), ModContent.ProjectileType<DreamParticle>(), 1, 0, default, Main.rand.Next(3));
             }
         }
         public override void BossLoot(ref string name, ref int potionType)
@@ -436,6 +513,10 @@ namespace HKBoss
         public override bool CheckActive()
         {
             return false;
+        }
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+            return (npc.ai[0] < 3);
         }
     }
 }

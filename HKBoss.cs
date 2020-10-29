@@ -177,7 +177,7 @@ namespace HKBoss
                 }
                 if (vector3.Y != 0f)
                 {
-                    player.Hurt(PlayerDeathReason.ByOther(3),Main.DamageVar(90), 0, false, false, false, 0);
+                    player.Hurt(PlayerDeathReason.ByOther(3), Main.DamageVar((DreamModWorld.Difficulty > 0) ? 150 : 90), 0, false, false, false, 0);
                     if (!player.dead)
                     {
                         player.Spawn();

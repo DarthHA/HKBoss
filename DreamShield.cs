@@ -70,7 +70,7 @@ namespace HKBoss
                 {
                     projectile.Center = owner.Center + (projectile.localAI[1] / 180 * MathHelper.TwoPi).ToRotationVector2() * R;
                     projectile.rotation = (projectile.Center - owner.Center).ToRotation();
-                    projectile.localAI[1] = (projectile.localAI[1] + owner.localAI[3] * Main.rand.Next(2)) % 180;
+                    projectile.localAI[1] = (projectile.localAI[1] + owner.localAI[3]) % 180;
                 }
                 else if (owner.ai[1] == 2)
                 {
@@ -164,7 +164,7 @@ namespace HKBoss
                         Player player = Main.player[Player.FindClosest(proj.Center, 1, 1)];
                         proj.hostile = true;
                         proj.friendly = false;
-                        if (proj.velocity == Vector2.Zero || player.heldProj == proj.whoAmI)
+                        if (proj.velocity == Vector2.Zero || player.heldProj == proj.whoAmI || proj.minion)
                         {
                             proj.Kill();
                         }
@@ -177,6 +177,7 @@ namespace HKBoss
                 }
             }
         }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
             spriteBatch.End();

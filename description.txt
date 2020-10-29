@@ -15,6 +15,12 @@ v0.3
 -Decrease Markoth's Damage.
 v0.4
 -Modify the way dream nails and dream shield are drawn.
+v0.5
+-Greatly increase Markoth's projectile resistance. But every attack cycle ,you will have one chance to do a full attack to him, which will be sure to crit and do double damage.
+-Markoth will not do contact damage in his death animination.
+v0.6
+-Increase the true melee damage applied to Markoth to 4x, but he now can be knocked back.
+-Increase spike damage in Ascended mode.
 
 这个mod可以让你挑战《空洞骑士》中的马科斯。
 你可以使用“挑战马科斯”物品来进入他的梦境世界挑战。
@@ -33,3 +39,9 @@ v0.3
 -降低了马科斯的伤害。
 v0.4
 -调整了梦之盾和梦之钉射弹的绘制方式。
+v0.5
+-大幅提高马科斯对弹幕的伤害减免，但每轮攻击周期里马科斯都可以受到一次全额弹幕伤害，该伤害必定暴击且威力*2。
+-马科斯在死亡动画时不再造成接触伤害。
+v0.6
+-真近战对马科斯伤害提升至4倍，但马科斯现在可以被击退。
+-提高晋升难度的尖刺伤害。
