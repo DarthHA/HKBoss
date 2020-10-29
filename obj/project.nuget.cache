@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "VC/sTxDD7iON2SSB8Iiw7MuhywZkotxuOzdOU4gizUJfadl0gQa48byKnJZjdZhUUDc6K81OWl6QP9exEbu99A==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Administrator\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\HKBoss\\HKBoss.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Administrator\\.nuget\\packages\\tmodloader.codeassist\\0.1.1\\tmodloader.codeassist.0.1.1.nupkg.sha512"
+  ],
+  "logs": []
+}
